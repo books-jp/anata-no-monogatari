@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<!--
+  ▼ アニメーションのスイッチ（デザイン憲法 §10）
+    data-anim="off" … 標準。アニメーションなし
+    data-anim="on"  … 見出し・本文・カード・挿絵が、画面に入ると順にふわっと現れる
+                       （購入ボタン・価格・追従フッターは動かさず、すぐ表示）
+  ▼ カラーパターンのスイッチ（デザイン憲法 §1）
+    data-theme="blue" … blue / navy / teal / green / pink / red / orange / purple / mono
+    ブランドカラーが決まっている場合は data-theme="custom" にして、下の :root の6色を書き換える
+-->
+<html lang="ja" data-anim="off" data-theme="teal" data-tone="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>あなたの物語は、もっと届く。〜新時代のコピーライティング〜</title>
+<meta name="description" content="言葉を少し変えるだけで、あなたの文章が生まれ変わります。売るための言葉ではなく、届けるための言葉へ。共感を生み、行動を促す文章のつくり方と、500のフレーズ辞典。Kindle版。">
+<!-- OGP（公開URLが決まってから絶対URLで記入。画像は1200×630px） -->
+<meta property="og:title" content="あなたの物語は、もっと届く。〜新時代のコピーライティング〜">
+<meta property="og:description" content="言葉を少し変えるだけで、あなたの文章が生まれ変わります。共感を生み、行動を促す文章のつくり方。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://books-jp.github.io/anata-no-monogatari/">
+<meta property="og:site_name" content="あなたの物語は、もっと届く。">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://books-jp.github.io/anata-no-monogatari/images/ogp.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Kindle本『あなたの物語は、もっと届く。』 言葉を少し変えるだけで、あなたの文章が生まれ変わります。">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://books-jp.github.io/anata-no-monogatari/images/ogp.jpg">
+<link rel="canonical" href="https://books-jp.github.io/anata-no-monogatari/">
+<link rel="icon" type="image/png" sizes="64x64" href="images/favicon.png">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+<script>
+  (function(d){
+    if(d.getAttribute('data-anim')!=='on') return;
+    if(!('IntersectionObserver' in window)) return;
+    if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    d.classList.add('anim-ready');
+  })(document.documentElement);
+</script>
+<style>
+  :root{
+    /* ═══ ここだけ変えれば全体の色が切り替わる（デザイン憲法 §1） ═══ */
+    /* ブランドカラー3段階＋α：濃（--accent）を決め、そこから中・淡を作る */
+    --accent:#1c78c0;         /* 濃：ブランドカラー本体。見出しの下線・強調・濃い帯・バッジ */
+    --accent-deep:#0f548e;    /* さらに濃：濃い帯のグラデーション上端・強調文字 */
+    --accent-mid:#8bbfe6;     /* 中：罫線の強調・プレースホルダー文字・区切り */
+    --accent-soft:#e6f1fb;    /* 淡(面)：セクション背景「soft」・アイコン背景 */
+    --panel:#f3f8fd;          /* ごく淡：セクション背景「alt」 */
+    --line:#d5e6f5;           /* 罫線 */
+    /* 文字 */
+    --ink:#1a1d21;
+    --ink-soft:#4e5661;
+    --gray:#7d8591;
+    --paper:#ffffff;
+    /* 比較の「良くない側」に使う中立色（ブランド色を使わない） */
+    --neutral-line:#c8cfd8;
+    --neutral-soft:#eceff3;
+    /* 購入ボタン（Web公開モード）。Amazon導線なら黄色のまま */
+    --cta:#ffd814;
+    --cta-hover:#f7ca00;
+    --cta-border:#fcd200;
+    --cta-ink:#0f1111;
+  }
+
+  /* ═══ カラーパターン：<html data-theme="…"> で切り替え（デザイン憲法 §1） ═══
+     一覧と見本は template/カラーパターン見本.html。該当しない値なら上の :root がそのまま使われる */
+  html[data-theme="blue"]{ /* ブルー（爽やか・信頼）／書籍LPの色 */
+    --accent:#1c78c0;--accent-deep:#0f548e;--accent-mid:#8bbfe6;--accent-soft:#e6f1fb;--panel:#f3f8fd;--line:#d5e6f5;
+  }
+  html[data-theme="navy"]{ /* ネイビー（誠実・堅実） */
+    --accent:#24477a;--accent-deep:#1c375f;--accent-mid:#9cacc3;--accent-soft:#e7ebf0;--panel:#f4f6f8;--line:#d3dae4;
+  }
+  html[data-theme="teal"]{ /* ティール（知的・落ち着き） */
+    --accent:#0f7c86;--accent-deep:#0c6169;--accent-mid:#93c4c9;--accent-soft:#e5f1f2;--panel:#f3f8f9;--line:#cfe5e7;
+  }
+  html[data-theme="green"]{ /* グリーン（安心・成長） */
+    --accent:#2a7d4f;--accent-deep:#21623e;--accent-mid:#9fc4b0;--accent-soft:#e8f1ec;--panel:#f4f8f6;--line:#d4e5dc;
+  }
+  html[data-theme="pink"]{ /* ピンク（華やか）／PR①③（Pie Systems）の色 */
+    --accent:#d61953;--accent-deep:#a81340;--accent-mid:#e8829d;--accent-soft:#fdeef2;--panel:#fdf6f8;--line:#f2d9e1;
+  }
+  html[data-theme="red"]{ /* テラコッタ（温かみ・情熱） */
+    --accent:#c04030;--accent-deep:#963225;--accent-mid:#e3a9a2;--accent-soft:#f8eae8;--panel:#fcf5f5;--line:#f2d9d6;
+  }
+  html[data-theme="orange"]{ /* オレンジ（元気・親しみ） */
+    --accent:#b95119;--accent-deep:#903f14;--accent-mid:#e0b198;--accent-soft:#f7ece6;--panel:#fcf6f4;--line:#f1dcd1;
+  }
+  html[data-theme="purple"]{ /* パープル（上品・創造） */
+    --accent:#6a4bb5;--accent-deep:#533a8d;--accent-mid:#bcaede;--accent-soft:#efebf7;--panel:#f8f6fb;--line:#e1dbf0;
+  }
+  html[data-theme="mono"]{ /* チャコール（モダン・中立） */
+    --accent:#3a4250;--accent-deep:#2d333e;--accent-mid:#a6aab0;--accent-soft:#e9eaec;--panel:#f5f6f6;--line:#d8d9dc;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic","Meiryo",system-ui,sans-serif;
+    line-height:1.95;letter-spacing:.02em;-webkit-font-smoothing:antialiased;
+  }
+  img{max-width:100%;display:block;}
+  :focus-visible{outline:3px solid var(--accent);outline-offset:3px;}
+  .wrap{max-width:760px;margin:0 auto;padding:0 22px;}
+  section{padding:84px 0;}
+  .alt{background:var(--panel);}
+  .soft{background:var(--accent-soft);}
+  p{margin:0 0 1.4em;}
+  p:last-child{margin-bottom:0;}
+  strong{font-weight:700;}
+  .em{color:var(--accent-deep);font-weight:700;}
+  .lead-p{font-size:1.06rem;}
+
+  h2{
+    font-size:1.55rem;font-weight:800;line-height:1.55;
+    margin:0 0 26px;padding-bottom:10px;
+    border-bottom:3px solid var(--accent);display:inline-block;
+  }
+  h2.c{display:table;margin-left:auto;margin-right:auto;text-align:center;}
+
+  /* ─── 画像スロット:images/ にファイルを置けば自動で表示。無ければ説明枠 ─── */
+  .ph{
+    position:relative;aspect-ratio:16/9;margin:0 0 30px;border-radius:12px;overflow:hidden;
+    background:repeating-linear-gradient(135deg,var(--panel),var(--panel) 14px,var(--accent-soft) 14px,var(--accent-soft) 28px);
+    border:1px dashed var(--accent-mid);
+  }
+  .ph::after{
+    content:attr(data-cap);position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    padding:20px;text-align:center;color:var(--accent-mid);font-size:.86rem;line-height:1.7;
+  }
+  .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;}
+  .ph:has(img){border:none;background:none;}
+
+  /* ─── ヒーロー ─── */
+  header.hero-sec{border-top:6px solid var(--accent);padding:32px 0 12px;}
+  .eyebrow{
+    display:inline-block;color:var(--accent);font-weight:700;font-size:.82rem;
+    border:1px solid var(--accent);border-radius:4px;padding:5px 12px;margin-bottom:24px;letter-spacing:.04em;
+  }
+  .hero{position:relative;aspect-ratio:16/9;border-radius:12px;overflow:hidden;
+    background:linear-gradient(135deg,var(--accent-deep),var(--accent));}
+  .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+  .hero-overlay{
+    position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;
+    padding:36px 34px 38px;
+    background:linear-gradient(to bottom,rgba(0,0,0,.08) 0%,rgba(0,0,0,.38) 42%,rgba(0,0,0,.78) 100%);
+  }
+  .hero-overlay h1{
+    color:#fff;margin:0;text-align:left;font-weight:900;
+    font-size:2.45rem;line-height:1.45;letter-spacing:.02em;
+    text-shadow:0 2px 14px rgba(0,0,0,.55),0 1px 3px rgba(0,0,0,.7);
+  }
+  .hero-overlay h1 .ln{display:inline-block;}
+  .hero-book{align-self:stretch;margin:0 0 12px;color:#fff;font-size:.9rem;font-weight:700;letter-spacing:.06em;
+    text-shadow:0 1px 6px rgba(0,0,0,.6);opacity:.95;}
+  .hero-overlay h1 small{display:block;font-size:1.02rem;font-weight:700;margin-top:12px;opacity:.95;}
+  .hero-lead{font-size:1.1rem;margin:32px 0 0;font-weight:500;}
+  .hero-sec .ab{margin-top:22px;}
+  .hero-q{font-size:1rem;font-weight:400;}
+  /* 導入のA/B：枠と背景を外し、アイコンだけ残す */
+  .hero-sec .ab{gap:22px;margin:26px 0 30px;}
+  html .hero-sec .ab .ab-box{border:none;background:none;padding:0;border-radius:0;display:flex;align-items:flex-start;gap:12px;}
+  .hero-sec .ab-box .tag{margin:4px 0 0;flex-shrink:0;}
+  .hero-sec .ab-a{color:var(--ink-soft);}
+  .hero-sec .ab-b{color:var(--ink);font-weight:700;}
+
+  .hero-sub{color:var(--ink-soft);margin:18px 0 0;}
+
+  /* ─── ボタン ─── */
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;
+    min-width:380px;
+    background:var(--cta);color:var(--cta-ink);border:1px solid var(--cta-border);text-decoration:none;
+    font-weight:700;font-size:1.1rem;
+    padding:18px 56px;border-radius:999px;letter-spacing:.05em;
+    box-shadow:0 4px 14px rgba(15,17,17,.14);transition:background .15s,transform .15s;
+  }
+  .btn:hover{background:var(--cta-hover);transform:translateY(-2px);}
+  .ku{margin:16px 0 0;font-size:.92rem;font-weight:700;color:var(--ink);}
+  .ku-badge{display:inline-block;background:var(--accent);color:#fff;font-size:.74rem;
+    padding:2px 10px;border-radius:4px;margin-right:8px;letter-spacing:.03em;vertical-align:1px;}
+  .cta-block .btn-note{margin-top:6px;}
+  /* 対面モード：連絡先ボタン（主＝塗り／副＝白抜き）。承認前は is-disabled で押せない状態に */
+  .btn-contact{background:var(--accent);color:#fff;border:1px solid var(--accent);}
+  .btn-contact:hover{background:var(--accent-deep);}
+  .btn-contact.sub{background:#fff;color:var(--accent);}
+  .btn-contact.sub:hover{background:var(--accent-soft);}
+  .btn.is-disabled{cursor:default;pointer-events:none;}
+  .nw{display:inline-block;}
+  .price{margin:18px 0 0;font-size:.95rem;font-weight:700;color:var(--ink);}
+  .price b{font-size:1.45rem;font-weight:900;margin-left:4px;letter-spacing:.02em;}
+  .price small{font-size:.78rem;font-weight:400;color:var(--gray);margin-left:2px;}
+  .price + .ku{margin-top:6px;}
+  .btn-note{font-size:.82rem;color:var(--gray);margin:12px 0 0;}
+  .cta-block{text-align:center;margin:40px 0 0;}
+
+  /* ─── 困りごとリスト ─── */
+  .trouble{
+    display:flex;gap:14px;align-items:flex-start;background:#fff;border:1px solid var(--line);
+    border-radius:10px;padding:15px 18px;margin:12px 0;
+  }
+  .trouble .mk{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:var(--accent-soft);
+    color:var(--accent);display:flex;align-items:center;justify-content:center;font-size:.78rem;margin-top:2px;}
+  .trouble p{margin:0;}
+
+  /* ─── 比較カード ─── */
+  .versus{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:28px 0;}
+  .vs-card{border-radius:12px;padding:22px 22px;}
+  .vs-card h3{margin:0 0 10px;font-size:1.05rem;line-height:1.6;}
+  .vs-card p{margin:0;font-size:.95rem;line-height:1.85;}
+  .vs-paper{background:#fff;border:1px solid var(--line);}
+  .vs-paper h3{color:var(--ink-soft);}
+  .vs-web{background:var(--accent);color:#fff;}
+
+  /* ─── 3つの道 ─── */
+  .roads{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:28px 0;}
+  .road{background:#fff;border:1px solid var(--line);border-radius:12px;padding:22px 18px;text-align:center;}
+  .road .ic{width:50px;height:50px;border-radius:12px;background:var(--accent);color:#fff;
+    display:flex;align-items:center;justify-content:center;margin:0 auto 12px;}
+  .road .ic svg{width:26px;height:26px;}
+  .road h3{margin:0 0 6px;font-size:1.04rem;}
+  .road p{margin:0;font-size:.88rem;color:var(--ink-soft);line-height:1.75;text-align:left;}
+
+  /* ─── 濃い帯 ─── */
+  .band{background:linear-gradient(180deg,var(--accent-deep) 0%,var(--accent) 100%);color:#fff;padding:88px 0;}
+  .band h2{color:#fff;border-bottom-color:rgba(255,255,255,.55);}
+  .band .ph{border-color:rgba(255,255,255,.35);
+    background:repeating-linear-gradient(135deg,rgba(255,255,255,.1),rgba(255,255,255,.1) 14px,rgba(255,255,255,.05) 14px,rgba(255,255,255,.05) 28px);}
+  .band .ph::after{color:rgba(255,255,255,.75);}
+  .band .ph:has(img){border:none;background:none;box-shadow:0 10px 30px rgba(0,0,0,.25);}
+  .band .big{font-size:1.24rem;font-weight:800;line-height:1.8;margin:30px 0;}
+  .band .pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:28px 0;}
+  .band .pillar{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:12px;
+    padding:18px 16px;text-align:center;font-weight:700;line-height:1.7;}
+
+  /* ─── 気づき ─── */
+  .turn{font-size:2.1rem;font-weight:900;color:var(--accent);line-height:1.5;margin:36px 0 10px;}
+
+  /* ─── 試し読み A/B ─── */
+  .source{font-size:.86rem;color:var(--gray);margin:-12px 0 26px;}
+  .ab{display:grid;gap:16px;margin:26px 0 32px;}
+  .ab-box{border-radius:12px;padding:22px 24px;line-height:1.9;}
+  .ab-box .tag{display:table;font-weight:800;font-size:.8rem;padding:2px 12px;border-radius:4px;margin-bottom:10px;}
+  .ab-a{border:1.5px solid var(--neutral-line);color:var(--ink-soft);background:#fff;}
+  .ab-a .tag{background:var(--neutral-soft);color:var(--ink-soft);}
+  .ab-b{background:var(--accent);color:#fff;}
+  .ab-b .tag{background:#fff;color:var(--accent);}
+
+  /* ─── 改行の実演 ─── */
+  .demo{display:grid;gap:14px;margin:26px 0;}
+  .demo-box{border-radius:12px;padding:20px 22px;font-size:.96rem;line-height:1.9;}
+  .demo-box .tag{display:table;font-weight:800;font-size:.78rem;padding:2px 10px;border-radius:4px;margin-bottom:10px;}
+  .demo-before{background:#fff;border:1.5px dashed var(--neutral-line);color:var(--ink-soft);}
+  .demo-before .tag{background:var(--neutral-soft);}
+  .demo-after{background:#fff;border:2px solid var(--accent);}
+  .demo-after .tag{background:var(--accent);color:#fff;}
+
+  /* ─── 身につくこと ─── */
+  .benefit{display:flex;gap:16px;align-items:flex-start;padding:18px 0;border-bottom:1px solid var(--line);}
+  .benefit:last-child{border-bottom:none;}
+  .benefit .ic{flex-shrink:0;width:46px;height:46px;border-radius:11px;background:var(--accent-soft);color:var(--accent);
+    display:flex;align-items:center;justify-content:center;}
+  .benefit .ic svg{width:24px;height:24px;}
+  .benefit h3{margin:0 0 4px;font-size:1.04rem;}
+  .benefit p{margin:0;font-size:.94rem;color:var(--ink-soft);line-height:1.8;}
+
+  /* ─── 章の地図 ─── */
+  .stats{display:flex;gap:30px;justify-content:center;margin:0 0 30px;}
+  .stat{text-align:center;}
+  .stat .n{font-size:2.3rem;font-weight:900;color:var(--accent);line-height:1.1;}
+  .stat .l{font-size:.82rem;color:var(--gray);}
+  .chapters{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .chapters li{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px;
+    display:grid;grid-template-columns:3.3em 1fr;gap:0 10px;}
+  .chapters .no{font-weight:800;color:var(--accent);font-size:.86rem;line-height:1.9;grid-row:span 2;}
+  .chapters .t{font-weight:700;font-size:.96rem;line-height:1.6;}
+  .chapters .d{font-size:.8rem;color:var(--gray);line-height:1.6;}
+
+  /* ─── こんな方へ ─── */
+  .for{list-style:none;margin:0;padding:0;}
+  .for li{position:relative;padding:12px 0 12px 32px;border-bottom:1px dashed var(--accent-mid);}
+  .for li::before{content:"✓";position:absolute;left:4px;top:12px;color:var(--accent);font-weight:900;}
+
+  /* ─── 本の紹介 ─── */
+  .book{display:grid;grid-template-columns:200px 1fr;gap:36px;align-items:center;}
+  .book img{box-shadow:0 14px 34px rgba(0,0,0,.2);}
+  .spec{margin:0;padding:0;list-style:none;}
+  .spec li{display:grid;grid-template-columns:4.5em 1fr;padding:10px 0;border-bottom:1px solid var(--line);font-size:.95rem;line-height:1.7;}
+  .spec li span:first-child{color:var(--gray);}
+
+  /* ─── 未来像 ─── */
+  .future{margin:26px 0 30px;display:grid;gap:10px;}
+  .fr{display:grid;grid-template-columns:1fr 34px 1fr;align-items:stretch;gap:0;}
+  .fr .bf{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px;
+    font-size:.92rem;color:var(--gray);line-height:1.7;display:flex;align-items:center;}
+  .fr .ar{display:flex;align-items:center;justify-content:center;color:var(--accent);font-weight:900;}
+  .fr .af{background:var(--accent);color:#fff;border-radius:10px;padding:14px 16px;
+    font-size:.95rem;font-weight:700;line-height:1.7;display:flex;align-items:center;}
+  .voice{font-size:1.45rem;font-weight:900;color:var(--accent-deep);line-height:1.7;margin:22px 0;
+    padding-left:18px;border-left:4px solid var(--accent);}
+
+  /* ─── 今読む理由 ─── */
+  .reasons{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:28px 0 0;}
+  .reason{background:#fff;border:1px solid var(--line);border-radius:12px;padding:22px 22px;}
+  .reason .rn{display:inline-block;background:var(--accent);color:#fff;font-size:.76rem;font-weight:800;
+    padding:2px 10px;border-radius:4px;margin-bottom:10px;letter-spacing:.04em;}
+  .reason h3{margin:0 0 8px;font-size:1.04rem;line-height:1.6;}
+  .reason p{margin:0;font-size:.9rem;color:var(--ink-soft);line-height:1.8;}
+  .final-push{font-weight:800;color:var(--accent-deep);margin-top:14px !important;}
+
+  /* ─── 著者 ─── */
+  .author-card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:32px 34px;}
+  .author-head{display:flex;align-items:center;justify-content:center;gap:34px;padding-bottom:22px;margin-bottom:22px;
+    border-bottom:1px solid var(--line);}
+  .author-ic{flex-shrink:0;width:104px;height:104px;border-radius:50%;overflow:hidden;background:var(--accent-soft);
+    border:4px solid #fff;box-shadow:0 6px 18px rgba(0,0,0,.12);}
+  .author-ic img{width:100%;height:100%;object-fit:cover;}
+  .author-name{font-weight:800;font-size:1.4rem;letter-spacing:.06em;margin:0;line-height:1.5;}
+  .author-role{font-size:.84rem;color:var(--gray);margin:2px 0 0;letter-spacing:.03em;}
+  .author-bio{margin:0 0 18px;line-height:2;}
+  .author-prod{font-size:.84rem;color:var(--gray);margin:0;}
+
+  /* ─── 最終CTA ─── */
+  .cta-final{background:linear-gradient(160deg,#fff 0%,var(--accent-soft) 100%);border:1px solid var(--line);
+    border-radius:16px;padding:44px 30px;text-align:center;}
+  .cta-final h2{border:none;display:block;padding:0;}
+  .cta-final .cover-s{width:130px;margin:0 auto 26px;box-shadow:0 10px 26px rgba(0,0,0,.18);}
+
+  footer{border-top:1px solid var(--line);padding:30px 0 110px;text-align:center;color:var(--gray);font-size:.8rem;line-height:1.8;}
+  footer p{margin:0;}
+  .ft-book{color:var(--ink-soft);font-weight:700;font-size:.86rem;}
+  .ft-sep{margin:0 8px;color:var(--line);}
+  .ft-copy{margin-top:6px !important;}
+  .ft-tm{margin-top:10px !important;font-size:.7rem;opacity:.85;}
+
+  /* ─── 追従フッター ─── */
+  .sticky{position:fixed;left:0;right:0;bottom:0;z-index:60;background:rgba(255,255,255,.97);
+    border-top:1px solid var(--line);box-shadow:0 -6px 20px rgba(27,25,24,.07);
+    padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));
+    transform:translateY(110%);transition:transform .3s ease;}
+  .sticky.show{transform:translateY(0);}
+  .sticky-inner{max-width:760px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:18px;}
+  .sticky .st-thumb{width:88px;height:44px;object-fit:cover;border-radius:6px;flex-shrink:0;box-shadow:0 2px 6px rgba(0,0,0,.15);}
+  .sticky .st{flex:0 1 auto;min-width:0;margin:0 10px 0 0;font-size:.88rem;font-weight:700;line-height:1.5;}
+  .sticky .st > span{display:block;font-weight:400;color:var(--gray);font-size:.76rem;white-space:nowrap;}
+  .sticky .btn{min-width:0;padding:11px 24px;font-size:.92rem;white-space:nowrap;box-shadow:none;}
+
+  /* このページのヒーロー写真：PCでは少し拡大して人物を右へ寄せ、文字と重ならないようにする */
+  @media (min-width:641px){ .hero img{left:0;right:auto;width:122%;max-width:none;object-position:left top;} }
+  /* このページのヒーロー文字：PCでは写真の左半分に収める */
+  @media (min-width:641px){
+    .hero-overlay{align-items:flex-start;}
+    .hero-overlay h1{max-width:60%;font-size:2.05rem;line-height:1.5;}
+    .hero-overlay h1 br{display:none;}
+    .hero-overlay h1 .ln{display:block;white-space:nowrap;}
+    .hero-overlay h1 small{white-space:normal;}
+    .hero-book{max-width:60%;}
+  }
+  @media (max-width:640px){
+    section,.band{padding:64px 0;}
+    h2{font-size:1.3rem;}
+    .hero{aspect-ratio:4/5;}
+    .hero img{object-position:72% center;}
+    .hero-overlay{padding:22px 20px 24px;background:linear-gradient(to bottom,rgba(0,0,0,.22) 0%,rgba(0,0,0,.5) 40%,rgba(0,0,0,.82) 100%);}
+    .hero-overlay h1{font-size:min(1.42rem,6.1vw);}
+    .hero-book{font-size:.74rem;margin-bottom:6px;}
+    header.hero-sec{padding-top:20px;}
+    .hero-overlay h1 small{font-size:.8rem;margin-top:6px;}
+    .versus,.roads,.band .pillars,.chapters{grid-template-columns:1fr;}
+    .book{grid-template-columns:1fr;justify-items:center;}
+    .book img{width:160px;}
+    .btn{width:100%;min-width:0;padding:17px 20px;}
+    .sticky .btn{width:auto;}
+    .sticky .pc-only{display:none;}
+    .sticky .st{flex:1;margin:0;font-size:.78rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .sticky .st > span{font-size:.66rem;overflow:hidden;text-overflow:ellipsis;}
+    .sticky .st-thumb{width:50px;height:25px;border-radius:4px;}
+    .sticky .btn{padding:10px 14px;font-size:.82rem;}
+    .sticky-inner{gap:8px;justify-content:flex-start;}
+    .sticky{padding-left:12px;padding-right:12px;}
+    .turn{font-size:1.7rem;}
+    .author-card{padding:24px 20px;}
+    .author-head{gap:24px;}
+    .author-ic{width:84px;height:84px;}
+    .author-name{font-size:1.25rem;}
+    .author-role .sep{display:none;}
+    .ft-book .nw.ft-sep{display:none;}
+    .ft-book .nw{display:block;}
+    .author-role .nw{display:block;line-height:1.7;}
+    .cta-final{padding:36px 18px;}
+    .fr{grid-template-columns:1fr;gap:4px;}
+    .fr .ar{transform:rotate(90deg);height:22px;}
+    .reasons{grid-template-columns:1fr;}
+    .voice{font-size:1.2rem;}
+    .cta-final p{font-size:.95rem;}
+    .ku{font-size:.86rem;}
+  }
+  @media (max-width:375px){.sticky .st-thumb{display:none;}}
+
+  /* ─── 2作目で追加：場面別の4枚カード ─── */
+  .roads.four{grid-template-columns:1fr 1fr;}
+  .road .scene{display:block;font-size:.78rem;font-weight:700;color:var(--accent);margin:-2px 0 6px;}
+  /* ─── 2作目で追加：フレーズ辞典の見本 ─── */
+  .phrases{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:26px 0 28px;}
+  .phrase{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;}
+  .phrase .meta{display:flex;justify-content:space-between;font-size:.74rem;color:var(--gray);margin-bottom:6px;}
+  .phrase .meta b{color:var(--accent);font-weight:800;}
+  .phrase .w{font-weight:800;font-size:1.04rem;line-height:1.6;margin:0 0 6px;}
+  .phrase .d{font-size:.84rem;color:var(--ink-soft);line-height:1.7;margin:0;}
+  .cats{list-style:none;margin:16px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+  .cats li{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:.86rem;font-weight:700;line-height:1.5;}
+  .cats li span{display:block;font-size:.72rem;font-weight:400;color:var(--gray);}
+  .sub-h{font-size:1.05rem;font-weight:800;margin:30px 0 4px;color:var(--accent-deep);}
+  @media (max-width:640px){ .roads.four,.phrases{grid-template-columns:1fr;} .cats{grid-template-columns:1fr 1fr;} }
+
+
+  /* ─── トーン：明るい（data-tone="light"）デザイン憲法 §1-2 ───
+     濃い面（濃い帯・目指す側のカード・Afterの例・未来像の右側）を、淡い面＋濃い文字に切り替える。
+     濃い帯は「空の色 → 白 → 朝の光」のグラデーション。小さなバッジやボタンは色のまま */
+  html[data-tone="light"]{--sky-a:var(--accent-soft);--sun-a:#f8f5e9;--em:var(--accent-deep);}
+  html[data-tone="light"] .band{background:linear-gradient(180deg,var(--sky-a) 0%,#f8fbfc 55%,var(--sun-a) 100%);color:var(--ink);}
+  html[data-tone="light"] .band h2{color:var(--ink);border-bottom-color:var(--accent);}
+  html[data-tone="light"] .band .big{color:var(--accent-deep);}
+  html[data-tone="light"] .band .pillar{background:rgba(255,255,255,.82);border:1px solid var(--line);color:var(--ink);}
+  html[data-tone="light"] .band .ph{border-color:var(--accent-mid);background:repeating-linear-gradient(135deg,var(--panel),var(--panel) 14px,var(--accent-soft) 14px,var(--accent-soft) 28px);}
+  html[data-tone="light"] .band .ph::after{color:var(--accent-mid);}
+  html[data-tone="light"] .band .ph:has(img){background:none;box-shadow:0 10px 26px rgba(0,0,0,.12);}
+  html[data-tone="light"] .vs-web{background:var(--accent-soft);color:var(--ink);border:1.5px solid var(--accent);}
+  html[data-tone="light"] .vs-web h3{color:var(--accent-deep);}
+  html[data-tone="light"] .ab-b{background:var(--accent-soft);color:var(--ink);border:2px solid var(--accent);}
+  html[data-tone="light"] .ab-b .tag{background:var(--accent);color:#fff;}
+  html[data-tone="light"] .fr .af{background:var(--accent-soft);color:var(--accent-deep);border:1.5px solid var(--accent-mid);}
+  html[data-tone="light"] .em,html[data-tone="light"] .voice,html[data-tone="light"] .final-push{color:var(--em);}
+
+  /* ─── アニメーション（data-anim="on" のときだけ効く） ─── */
+  html.anim-ready [data-a]{opacity:0;transform:translateY(18px);
+    transition:opacity .7s ease-out,transform .7s ease-out;will-change:opacity,transform;}
+  html.anim-ready [data-a].in{opacity:1;transform:none;}
+  html.anim-ready .ph[data-a]{transform:translateY(10px) scale(.985);}
+  html.anim-ready .ph[data-a].in{transform:none;}
+
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto;}.sticky{transition:none;}}
+
+  /* このページのヒーロー：暗い幕を標準より少しだけ薄く（写真の明るさを残しつつ、文字を読ませる） */
+  .hero-overlay{background:linear-gradient(to bottom,rgba(0,0,0,.04) 0%,rgba(0,0,0,.28) 42%,rgba(0,0,0,.64) 100%);}
+  @media (max-width:640px){
+    .hero-overlay{background:linear-gradient(to bottom,rgba(0,0,0,.1) 0%,rgba(0,0,0,.38) 40%,rgba(0,0,0,.7) 100%);}
+  }
+  /* 最初のCTAの下に余白 */
+  header.hero-sec{padding-bottom:72px;}
+  @media (max-width:640px){ header.hero-sec{padding-bottom:56px;} }
+  /* 「あなたのアイデアが…」の帯は、朝の光の淡い黄色一色（前のセクションとの区切りをはっきりさせる） */
+  html[data-tone="light"] .band.band-sun{background:var(--sun-a);}
+  /* スマホの追従フッター：書名が最後まで見えるように少し詰める */
+  @media (max-width:640px){
+    .sticky .st{font-size:.74rem;}
+    .sticky .st > span{font-size:.64rem;}
+    .sticky .btn{padding:10px 12px;font-size:.8rem;}
+    .sticky .st-thumb{width:46px;height:23px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ① ヒーロー -->
+<header class="hero-sec">
+  <div class="wrap">
+    <div class="hero">
+      <img src="images/lp-hero.jpg" alt="想いを込めて文章を書く人" onerror="this.remove()">
+      <div class="hero-overlay">
+        <p class="hero-book">Kindle本『あなたの物語は、もっと届く。』</p>
+        <h1><span class="ln">言葉を少し変えるだけで、</span><br><span class="ln">あなたの文章が</span><span class="ln">生まれ変わります。</span>
+          <small><span class="nw">共感を生み、</span><span class="nw">行動を促す文章のつくり方。</span></small></h1>
+      </div>
+    </div>
+    <p class="hero-lead hero-q"><span class="nw">この2つの書き出し、</span><span class="nw">あなたなら、</span><span class="nw">どちらを読みたいですか？</span></p>
+    <div class="ab">
+      <div class="ab-box ab-a"><span class="tag">A</span>「多くの人が悩む問題を解決する方法をご紹介します」</div>
+      <div class="ab-box ab-b"><span class="tag">B</span>「毎朝、鏡の前で『今日も同じ服だ』とため息をついていた私が、ある日をきっかけに変わった話」</div>
+    </div>
+    <p>おそらく、Bではないでしょうか。</p>
+    <p>伝えたい内容は、どちらも同じです。<br>
+    違うのは、<span class="em">言葉の選び方だけ</span>。</p>
+    <p>Aは、正しくて読みやすい。けれど、誰の顔も浮かんできません。<br>
+    Bは、たった一人の、具体的な朝の情景から始まっています。<br>
+    だからこそ、読んでいる人の記憶の中にある、似たような朝と重なり合うのです。</p>
+    <p class="hero-lead" style="margin-top:34px;"><span class="nw">想いを込めて書いたのに、</span><span class="nw">なぜか届かない。</span><br><span class="nw">そんな経験は、</span><span class="nw">ありませんか？</span></p>
+    <p class="hero-sub">
+      <span class="nw">その原因は、</span><span class="nw">あなたの想いではなく、</span><br>
+      <span class="nw">ほんの少しの「言葉の選び方」に</span><span class="nw">あるのかもしれません。</span>
+    </p>
+    <div class="cta-block cta-watch">
+      <a class="btn" href="https://www.amazon.co.jp/dp/B0HGY3YKVY" target="_blank" rel="noopener">Amazonで読む</a>
+      <p class="price">Kindle版 <b>¥780</b><small>（税込）</small></p>
+      <p class="ku"><span class="ku-badge">Kindle Unlimited</span><span class="nw">会員なら、無料で読めます</span></p>
+      <p class="btn-note">商品ページから無料サンプルも読めます<br><span class="nw">※価格は変更になる場合があります</span></p>
+    </div>
+  </div>
+</header>
+
+<!-- ③ 自分ごと化 -->
+<section class="soft">
+  <div class="wrap">
+    <h2>あなたの文章も、<br>Aのようになっていませんか？</h2>
+    <figure class="ph" data-cap="［ 挿絵1：画面を見つめて、ため息をつく人 ］"><img src="images/lp-1.jpg" alt="画面を見つめる人" onerror="this.remove()"></figure>
+    <p class="lead-p">こんな心当たりは、ないでしょうか。</p>
+    <div class="trouble"><span class="mk">▶</span><p>想いを込めて書いたのに、読まれた手応えがない。</p></div>
+    <div class="trouble"><span class="mk">▶</span><p>「売り込みっぽい」と思われるのが怖くて、言いたいことを引っ込めてしまう。</p></div>
+    <div class="trouble"><span class="mk">▶</span><p>AIに書かせると整うけれど、「悪くはない。でも、なんだか、これじゃない」。</p></div>
+    <div class="trouble"><span class="mk">▶</span><p>自分の経験に、伝える価値があるのか分からない。</p></div>
+    <p style="margin-top:26px;">それは、あなたの経験や想いに、価値がないからではありません。</p>
+    <p><span class="em">ただ、読者の言葉に「橋渡し」されていないだけなのです。</span></p>
+  </div>
+</section>
+
+<!-- ④ 理由①：なぜ届き方が変わるのか -->
+<section>
+  <div class="wrap">
+    <h2>言葉を少し変えるだけで、<br>届き方が変わる理由。</h2>
+    <figure class="ph" data-cap="［ 挿絵2：スマホでタイムラインを流し見する指先 ］"><img src="images/lp-2.jpg" alt="スマホを流し見する指先" onerror="this.remove()"></figure>
+    <p>答えは、今の時代にあります。</p>
+    <p>文章を書くことが、かつてなく簡単になりました。<br>
+    AIに頼めば、三秒後には、驚くほど整った文章が現れます。</p>
+    <p>ただ、AIの文章は、とても上手に「平均的」です。<br>
+    角が取れていて、誰も傷つけず、誰の心にも大きく引っかかりません。</p>
+    <p>一方で、読者の注意力には限りがあります。<br>
+    本書では、これを<span class="em">「可処分注意力」</span>と呼んでいます。<br>
+    最初の一文で、読者は「読み続けるか、離れるか」を決めてしまいます。</p>
+    <p>平均的な正しさよりも、具体的な一つの実感のほうが、結果として多くの人に届く。<br>
+    この逆説が、本書全体を貫く考え方です。</p>
+  </div>
+</section>
+
+<!-- ⑤ 理由②：売る言葉と届ける言葉 -->
+<section class="alt">
+  <div class="wrap">
+    <h2>強い言葉で、<br>読者を動かす必要はありません。</h2>
+    <figure class="ph" data-cap="［ 挿絵5：窓辺で、静かに考えごとをする人 ］"><img src="images/lp-5.jpg" alt="考えごとをする人" onerror="this.remove()"></figure>
+    <p>言葉の技術を教える本は、これまでにもたくさんありました。<br>
+    この一言を使えば、クリック率が上がる。この型に当てはめれば、読者は思わず反応してしまう。</p>
+    <p>それらは、間違ってはいません。<br>
+    けれど、読者は今、煽られることに慣れてしまいました。<br>
+    強い言葉ほど、疑われる時代が来ています。</p>
+    <p>言葉には、2つの使い方があります。</p>
+    <div class="versus">
+      <div class="vs-card vs-paper"><h3>売るための言葉</h3><p>「読者は放っておけば動かない」が前提。限定で焦らせ、不安を煽り、外側から動かそうとする。</p></div>
+      <div class="vs-card vs-web"><h3>届けるための言葉</h3><p>「あなたの中に、伝える価値がある」が前提。読者の言葉で語り、伝わらなさを埋めていく。</p></div>
+      <div class="vs-card vs-paper"><h3>「動かされた」と<br>気づいた読者は</h3><p>その言葉を、そしてその書き手を、もう一度信じたいとは思えない。</p></div>
+      <div class="vs-card vs-web"><h3>「代わりに言ってくれた」と<br>感じた読者は</h3><p>その書き手の言葉を、また読みたくなる。</p></div>
+    </div>
+    <p class="turn">読者は、動かす相手ではなく、<br>届ける相手です。</p>
+    <p style="margin-top:24px;">この本が大切にしているのは、<span class="em">「届けるための言葉」</span>です。<br>
+    読者を操作するのではなく、あなたと読者のあいだにある「伝わらなさ」を埋める。<br>
+    本書では、これを<span class="em">「橋渡し」</span>と呼んでいます。</p>
+  </div>
+</section>
+
+<!-- ⑥ 山場 -->
+<div class="band">
+  <div class="wrap">
+    <h2>あなたの物語は、<br>すでにそこにある。</h2>
+    <figure class="ph" data-cap="［ 挿絵3：窓辺の机で、ノートにペンを走らせる手元 ］"><img src="images/lp-3.jpg" alt="ノートに書く手元" onerror="this.remove()"></figure>
+    <p>足りないのは、才能でも、強い言葉でもありません。<br>
+    あなたの中には、すでに伝える価値のある経験や、想いや、物語があります。<br>
+    ただそれが、読者の言葉に橋渡しされていないだけです。</p>
+    <div class="pillars">
+      <div class="pillar">読者が<br>普段使う言葉で</div>
+      <div class="pillar">実感できる<br>具体例で</div>
+      <div class="pillar">読者の立場に<br>立った順序で</div>
+    </div>
+    <p class="big">必要なのは、相手を操作する強い言葉ではありません。<br>
+    あなたと読者をつなぐ、橋渡しの言葉です。</p>
+  </div>
+</div>
+
+<!-- ⑦ 確信に変える：対比② -->
+<section>
+  <div class="wrap">
+    <h2>では、もう一度、<br>読み比べてみてください。</h2>
+    <p>今度は、誰もが一度は書く「自己紹介文」です。</p>
+    <div class="ab">
+      <div class="ab-box ab-a"><span class="tag">Before</span>
+        「はじめまして。私はライターとして活動しており、これまで多くのクライアント様の記事を執筆してきました。丁寧な仕事を心がけています」</div>
+      <div class="ab-box ab-b"><span class="tag">After</span>
+        「はじめまして。私は3年前、自分の書いた文章を読み返して『これ、誰にも伝わってないな』と落ち込んだ夜がありました。そこから、伝わる文章とは何かを学び直し、今はその経験を活かして、読者に届く言葉を一緒に考える仕事をしています」</div>
+    </div>
+    <p>Beforeは、間違ってはいません。<br>
+    けれど、具体的な情景も、感情の動きも、読者との接点もありません。</p>
+    <p>Afterは、「落ち込んだ夜」という一場面から始まり、そこからの転換が描かれています。<br>
+    読者は「丁寧な仕事」という言葉よりも、この具体的な経緯に、書き手への信頼を感じます。</p>
+    <p>同じ経歴でも、言葉を少し変えるだけで、これだけ違って届きます。<br>
+    <span class="em">あなたの文章も、生まれ変われるのです。</span></p>
+    <p>本書では、こうした書き換えを<span class="em">「転換点を探す → 具体的な感情を足す → 読者との接点を意識する」</span>という手順で、ひとつずつ体感していきます。</p>
+    <div class="cta-block cta-watch">
+      <a class="btn" href="https://www.amazon.co.jp/dp/B0HGY3YKVY" target="_blank" rel="noopener">続きを本書で読む</a>
+      <p class="price">Kindle版 <b>¥780</b><small>（税込）</small></p>
+      <p class="ku"><span class="ku-badge">Kindle Unlimited</span><span class="nw">会員なら、無料で読めます</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- ⑨ フレーズ辞典 -->
+<section class="soft">
+  <div class="wrap">
+    <h2>書くたびに開ける、<br>500のフレーズ辞典。</h2>
+    <figure class="ph" data-cap="［ 挿絵4：付箋を貼った本を開き、書きものをする手元 ］"><img src="images/lp-4.jpg" alt="本を開いて書きものをする手元" onerror="this.remove()"></figure>
+    <p>この本の後半は、厳選した500の言い回しを集めた<span class="em">「フレーズ辞典」</span>です。<br>
+    冒頭で心をつかむ、共感を示す、物語に引き込む、背中を押す（煽らず）――<br>
+    9つのカテゴリに分け、すべての語に、重要度と通し番号をつけました。</p>
+    <div class="phrases">
+      <div class="phrase"><div class="meta"><b>冒頭で心をつかむ</b><span>★★★ No.005</span></div><p class="w">そんな経験はありませんか。</p><p class="d">読者にも心当たりがありそうな「あるある」を、問いかけの形で差し出す語。</p></div>
+      <div class="phrase"><div class="meta"><b>共感を示す</b><span>★★★ No.067</span></div><p class="w">あの、○○という感覚。</p><p class="d">名前のつけにくい感覚を、そのまま言葉にする語。</p></div>
+      <div class="phrase"><div class="meta"><b>物語に引き込む</b><span>★★★ No.131</span></div><p class="w">そんな時、○○が起きました。</p><p class="d">停滞していた状況に、変化のきっかけが訪れたことを示す語。</p></div>
+      <div class="phrase"><div class="meta"><b>背中を押す（煽らず）</b><span>★★★ No.298</span></div><p class="w">今すぐでなくても、○○から始めてみませんか。</p><p class="d">急かさず、読者のペースで始められることを示す語。</p></div>
+      <div class="phrase"><div class="meta"><b>背中を押す（煽らず）</b><span>★★★ No.304</span></div><p class="w">○○かもしれない、と思う方もいるでしょう。</p><p class="d">起こりうる懸念を、否定せず、まず認める語。</p></div>
+      <div class="phrase"><div class="meta"><b>締めくくる・余韻を残す</b><span>★★★ No.466</span></div><p class="w">この続きは、あなた自身の中にあります。</p><p class="d">答えを与えきらず、読者自身の中に委ねる語。</p></div>
+    </div>
+    <p>読んで終わりではなく、書くたびに開いて使う一冊。<br>
+    <span class="em">そのままコピー＆ペーストして使っても構いません。</span><br>
+    書き出しで手が止まったとき、締めの一文に迷ったとき、あなたの手元にある辞典になります。</p>
+  </div>
+</section>
+
+<!-- ⑧ 場面別 -->
+<section class="alt">
+  <div class="wrap">
+    <h2>届け方は、<br>場所によって変わる。</h2>
+    <p>同じ言葉でも、置かれる場所によって、届き方は変わります。</p>
+    <div class="roads four">
+      <div class="road"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div><h3>SNS</h3><span class="scene">一瞬で、足を止めてもらう場所</span><p>内容を説明するより、読者の指を止める、具体的な一場面から始める。</p></div>
+      <div class="road"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg></div><h3>note・ブログ</h3><span class="scene">じっくり、信頼を積み重ねる場所</span><p>読み終えたときに「読んでよかった」と思える、一貫した流れをつくる。</p></div>
+      <div class="road"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M9 14h6"/></svg></div><h3>LP</h3><span class="scene">決断の後押しをする場所</span><p>迷いを煽るのではなく、読者の不安に先回りして、言葉にしてあげる。</p></div>
+      <div class="road"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></div><h3>メルマガ</h3><span class="scene">関係を、続けていく場所</span><p>毎回の説得より、「この人の便りは、また読みたい」と思える信頼を重ねる。</p></div>
+    </div>
+    <p>第6章では、それぞれの場面での書き換え例とともに、場面を超えて変わらない「届ける言葉」の本質を紹介しています。</p>
+  </div>
+</section>
+
+<!-- ⑩ 得られるもの -->
+<section>
+  <div class="wrap">
+    <h2>この本で、身につくこと</h2>
+    <figure class="ph" data-cap="［ 挿絵6：本を読みながら、ノートにメモをとる手元 ］"><img src="images/lp-6.jpg" alt="メモをとる手元" onerror="this.remove()"></figure>
+    <div class="benefit"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></div><div><h3>伝わる言葉を見つける力</h3><p>読者がまだ言葉にできていない「もったいなさ」を見つけ、「代わりに言ってくれた」と感じてもらえる言葉を選べるようになります。</p></div></div>
+    <div class="benefit"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20V3H6.5A2.5 2.5 0 004 5.5z"/></svg></div><div><h3>事実を、届く物語に変える力</h3><p>転換点・具体的な感情・読者との接点。あなたの経験を、読者の心に残るストーリーに書き換えられます。</p></div></div>
+    <div class="benefit"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 00-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 000-7.8z"/></svg></div><div><h3>煽らずに、背中を押す力</h3><p>不安を煽るのではなく、読者の迷いに先回りして寄り添う。信頼されたまま、行動につながる言葉が書けます。</p></div></div>
+    <div class="benefit"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div><div><h3>場面に合わせて、届け方を変える力</h3><p>SNS・note・LP・メルマガ。それぞれの場所に合った言葉の置き方が分かります。</p></div></div>
+    <div class="benefit"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg></div><div><h3>型を「借りる」のではなく、「理解する」力</h3><p>今も生きている型と、死語になりつつある型を見分け、自分の言葉で使いこなせるようになります。</p></div></div>
+  </div>
+</section>
+
+<!-- ⑪ 未来像 -->
+<section class="soft">
+  <div class="wrap">
+    <h2>読み終えたあと、<br>あなたの言葉はこう変わる。</h2>
+    <p>知識が増えるだけでは、意味がありません。<br>
+    大切なのは、あなたが次に書く一文が、どう変わるかです。</p>
+    <div class="future">
+      <div class="fr"><div class="bf">書いても、読まれた手応えがない</div><div class="ar">→</div><div class="af">「代わりに言ってくれた」と感じてもらえる</div></div>
+      <div class="fr"><div class="bf">売り込みっぽさが怖くて、想いを引っ込める</div><div class="ar">→</div><div class="af">煽らずに、自信を持って想いを伝えられる</div></div>
+      <div class="fr"><div class="bf">自己紹介や商品紹介が、ありきたりになる</div><div class="ar">→</div><div class="af">一つの場面から始まる、記憶に残る文章になる</div></div>
+      <div class="fr"><div class="bf">書き出しの一文で、毎回手が止まる</div><div class="ar">→</div><div class="af">辞典を開けば、最初の一文が見つかる</div></div>
+      <div class="fr"><div class="bf">自分の経験に、価値があるのか分からない</div><div class="ar">→</div><div class="af">自分の物語が、誰かに届くと信じられる</div></div>
+    </div>
+    <p>そして、いつか読者から、こんなふうに思ってもらえるはずです。</p>
+    <p class="voice">「この人の言葉は、<br>また読みたい」</p>
+  </div>
+</section>
+
+<!-- ⑫ 全体像 -->
+<section class="alt">
+  <div class="wrap">
+    <h2 class="c">理論と辞典の2部構成で、届く言葉を身につける</h2>
+    <div class="stats">
+      <div class="stat"><div class="n">8</div><div class="l">章（理論編）</div></div>
+      <div class="stat"><div class="n">9</div><div class="l">カテゴリ</div></div>
+      <div class="stat"><div class="n">500</div><div class="l">フレーズ</div></div>
+    </div>
+    <p class="sub-h">第1部　理論編</p>
+    <ol class="chapters">
+      <li><span class="no">1章</span><span class="t">なぜ今、言葉なのか</span><span class="d">平均点の文章があふれる時代に</span></li>
+      <li><span class="no">2章</span><span class="t">「売る言葉」から「届ける言葉」へ</span><span class="d">橋渡しという発想</span></li>
+      <li><span class="no">3章</span><span class="t">読者を知る</span><span class="d">「もったいなさ」を発見する</span></li>
+      <li><span class="no">4章</span><span class="t">あなたの物語を橋渡しする</span><span class="d">事実から、ストーリーへ</span></li>
+      <li><span class="no">5章</span><span class="t">温故知新</span><span class="d">生きている型と、死語になったコピー</span></li>
+      <li><span class="no">6章</span><span class="t">場面で使い分ける</span><span class="d">SNS・note・LP・メルマガ</span></li>
+      <li><span class="no">7章</span><span class="t">Before/Afterで学ぶ書き換えの技術</span><span class="d">自己紹介・商品紹介・告知</span></li>
+      <li><span class="no">8章</span><span class="t">辞典との付き合い方</span><span class="d">言葉を選び、育て続けるために</span></li>
+    </ol>
+    <p class="sub-h">第2部　フレーズ辞典編（500語）</p>
+    <ul class="cats">
+      <li>冒頭で心をつかむ<span>65語</span></li>
+      <li>共感を示す<span>65語</span></li>
+      <li>物語に引き込む<span>65語</span></li>
+      <li>信頼を伝える<span>50語</span></li>
+      <li>気づきを与える<span>50語</span></li>
+      <li>背中を押す（煽らず）<span>65語</span></li>
+      <li>場面別 SNS向け<span>50語</span></li>
+      <li>場面別 メルマガ向け<span>50語</span></li>
+      <li>締めくくる・余韻を残す<span>40語</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ⑬ こんな方へ -->
+<section>
+  <div class="wrap">
+    <h2>書くことで、<br>誰かに想いを届けたいすべての人へ。</h2>
+    <figure class="ph" data-cap="［ 挿絵7：カフェで、ノートパソコンに向かって発信する人 ］"><img src="images/lp-7.jpg" alt="発信する人" onerror="this.remove()"></figure>
+    <ul class="for">
+      <li>SNSやnoteで発信しているけれど、反応が伸びない</li>
+      <li>自分の商品やサービス、活動を、売り込みにならずに紹介したい</li>
+      <li>AIで文章を整えられるようになったが、「これじゃない」と感じる</li>
+      <li>自己紹介やプロフィール文が、ありきたりになってしまう</li>
+      <li>コピーライティングの本を読んだが、「煽る言葉」に抵抗がある</li>
+      <li>書き出しや締めの一文で、いつも手が止まる</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ⑮ 今の理由 -->
+<section class="soft">
+  <div class="wrap">
+    <h2><span class="nw">「もう少し上手に</span><span class="nw">書けるようになってから」と、</span><span class="nw">想いをしまっていませんか。</span></h2>
+    <p>伝えたいことは、ある。<br>
+    でも、うまく言葉にできる自信がない。<br>
+    だから、もう少し上手になってから――。</p>
+    <p>そうやって胸にしまっている想いは、きっと誰にでもあります。</p>
+    <p>けれど、届く文章は、上手になってから書くものではありません。<br>
+    言葉を少し変えるところから、もう始められます。</p>
+    <p>だから、始めるのは<span class="em">「今」</span>がいい。<br>
+    そう言える理由が、4つあります。</p>
+    <div class="reasons">
+      <div class="reason"><span class="rn">理由 1</span><h3>強い言葉ほど、疑われる時代になったから</h3><p>煽る言葉に、読者はもう身構えています。誠実な「届ける言葉」に切り替えるほど、信頼が積み上がっていきます。</p></div>
+      <div class="reason"><span class="rn">理由 2</span><h3>次に書く一文から、すぐに使えるから</h3><p>500のフレーズ辞典は、そのままコピーして使えます。今日の投稿の書き出しから、変えられます。</p></div>
+      <div class="reason"><span class="rn">理由 3</span><h3>誰もがAIで書ける今こそ、「あなたの物語」が差になるから</h3><p>平均点の文章があふれるほど、具体的な一つの実感が、読者の目に留まります。</p></div>
+      <div class="reason"><span class="rn">理由 4</span><h3>今日から、スマホで読めるから</h3><p>Kindle版 ¥780。Kindle Unlimited会員なら無料です。気になる章や、辞典の好きなカテゴリから開いても大丈夫です。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑭ 背中を押す -->
+<div class="band band-sun">
+  <div class="wrap">
+    <h2>あなたのアイデアが、<br>悪いわけではありません。</h2>
+    <figure class="ph" data-cap="［ 挿絵8：朝の光の中、窓の外の街を見つめる人の後ろ姿 ］"><img src="images/lp-8.jpg" alt="未来を見つめる人" onerror="this.remove()"></figure>
+    <p>言葉が、ほんの少し違っていただけです。</p>
+    <p>それだけで、あなたの素晴らしいメッセージが届かないのは、<br>
+    あまりにも、もったいない。</p>
+    <p>書くことは、想いを未来につなぐこと。<br>
+    あなたの中にある物語は、すでにそこにあります。</p>
+    <p class="big">あなたの物語を、<br>しっかりと届く形で、届けていきましょう。</p>
+  </div>
+</div>
+
+<!-- ⑯ この本について -->
+<section class="alt">
+  <div class="wrap">
+    <h2>この本について</h2>
+    <div class="book">
+      <img src="images/cover.jpg" alt="あなたの物語は、もっと届く。 表紙" onerror="this.remove()">
+      <ul class="spec">
+        <li><span>書名</span><span>あなたの物語は、もっと届く。<br>〜新時代のコピーライティング〜</span></li>
+        <li><span>著者</span><span>笹野 明（Akira Sasano）</span></li>
+        <li><span>形式</span><span>Kindle版（電子書籍）</span></li>
+        <li><span>価格</span><span>¥780（税込）／Kindle Unlimited会員は無料</span></li>
+        <li><span>構成</span><span>理論編 全8章＋フレーズ辞典 500語（9カテゴリ）</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ⑰ 著者 -->
+<section>
+  <div class="wrap">
+    <h2>著者について</h2>
+    <div class="author-card">
+      <div class="author-head">
+        <div class="author-ic"><img src="images/author.jpg" alt="著者 笹野 明" onerror="this.remove()"></div>
+        <div>
+          <p class="author-name">笹野 明</p>
+          <p class="author-role"><span class="nw">Akira Sasano</span><span class="sep"> ／ </span><span class="nw">ウェブクリエイター</span></p>
+        </div>
+      </div>
+      <p class="author-bio">ある日突然、デジタル領域に飛び込んだ異色のデジタルクリエイター。<br>
+      ウェブサイト・デザイン構築、動画制作、アプリ開発などのマルチなスキルを生かしつつ、「かつて初心者だったからこそ気づける視点」を大切に、人に喜ばれるプロダクトを追求し続けている。</p>
+      <p class="author-prod">プロダクト：WordPressテーマ「Kuu」／画像収集・最適化ツール「Superior」シリーズ ほか<br>
+      著書：<a href="https://books-jp.github.io/shinjidai-web-writing/" target="_blank" rel="noopener" style="color:inherit;">『新時代のWebライティング』</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- ⑱ 最終CTA -->
+<section>
+  <div class="wrap">
+    <div class="cta-final">
+      <img class="cover-s" src="images/cover.jpg" alt="" onerror="this.remove()">
+      <h2>あなたの物語は、<br>もっと届く。</h2>
+      <p><span class="nw">言葉を少し変えるだけで、</span><span class="nw">あなたの想いは、</span><span class="nw">読者のもとへ深く届くようになります。</span></p>
+      <p><span class="nw">本書で、</span><span class="nw">そのきっかけをつかんでいただけたら嬉しいです。</span></p>
+      <p class="final-push"><span class="nw">次にあなたが書く一文から、</span><span class="nw">変わり始めます。</span></p>
+      <div style="margin-top:30px;">
+    <div class="cta-block cta-watch">
+      <a class="btn" href="https://www.amazon.co.jp/dp/B0HGY3YKVY" target="_blank" rel="noopener">Amazonで読む</a>
+      <p class="price">Kindle版 <b>¥780</b><small>（税込）</small></p>
+      <p class="ku"><span class="ku-badge">Kindle Unlimited</span><span class="nw">会員なら、無料で読めます</span></p>
+      <p class="btn-note">商品ページから無料サンプルも読めます<br><span class="nw">※価格は変更になる場合があります</span></p>
+    </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer><div class="wrap">
+  <p class="ft-book"><span class="nw">あなたの物語は、もっと届く。</span><span class="nw">〜新時代のコピーライティング〜</span><span class="nw ft-sep">｜</span><span class="nw">Amazon Kindle版</span></p>
+  <p class="ft-tm">Amazon、Kindle、Kindle Unlimitedは、Amazon.com, Inc.またはその関連会社の商標です。</p>
+</div></footer>
+
+<div class="sticky" id="sticky" aria-hidden="true">
+  <div class="sticky-inner">
+    <img class="st-thumb" src="images/sticky-thumb.jpg" alt="" onerror="this.remove()">
+    <p class="st">あなたの物語は、もっと届く。<span><span class="pc-only">Kindle版 ¥780｜</span>Kindle Unlimited会員なら無料</span></p>
+    <a class="btn" href="https://www.amazon.co.jp/dp/B0HGY3YKVY" target="_blank" rel="noopener" tabindex="-1">Amazonで読む</a>
+  </div>
+</div>
+
+<script>
+/* ═══ アニメーション本体：data-anim="on" のときだけ動く ═══ */
+(function(){
+  var root=document.documentElement;
+  if(!root.classList.contains('anim-ready')) return;
+  // 動かす部品（見出し・本文・カード・挿絵）
+  var SEL=['.hero','.hero-lead','.hero-sub','h2','section p','.band p','.ph',
+    '.trouble','.vs-card','.road','.pillar','.ab-box','.demo-box','.benefit','.fr','.voice',
+    '.stat','.chapters li','.for li','.reason','.book','.author-card','.cta-final > h2','.cta-final > p','.cta-final > img'];
+  // 動かさない場所（行動の部品はすぐ表示）
+  var SKIP='.cta-block, .sticky, footer';
+  var JOIN=SEL.join(',');
+  var list=[];
+  document.querySelectorAll(JOIN).forEach(function(el){
+    if(el.closest(SKIP)) return;                       // ボタン・価格・追従フッターは対象外
+    var p=el.parentElement && el.parentElement.closest(JOIN);
+    if(p && !p.closest(SKIP)) return;                  // 親が既に動く部品なら二重にしない
+    el.setAttribute('data-a','');
+    list.push(el);
+  });
+  // 同時に画面に入ったもの同士にだけ、少し時間差をつける（最大6段）
+  function show(el){ if(!el.classList.contains('in')){ el.classList.add('in'); io.unobserve(el); } }
+  var io=new IntersectionObserver(function(es){
+    var hit=es.filter(function(e){ return e.isIntersecting; }).map(function(e){ return e.target; });
+    hit.sort(function(a,b){ return a.compareDocumentPosition(b) & 4 ? -1 : 1; });
+    hit.forEach(function(el,i){ setTimeout(function(){ show(el); }, Math.min(i,6)*90); });
+  },{threshold:.12,rootMargin:'0px 0px -6% 0px'});
+  // 速くスクロールして通り過ぎた部品は、待たずにすぐ表示（空白を見せない）
+  var ticking=false;
+  function catchUp(){
+    ticking=false;
+    var vh=window.innerHeight;
+    for(var i=0;i<list.length;i++){
+      var el=list[i];
+      if(el.classList.contains('in')) continue;
+      if(el.getBoundingClientRect().top < vh*0.25) show(el);
+    }
+  }
+  window.addEventListener('scroll',function(){ if(!ticking){ ticking=true; requestAnimationFrame(catchUp); } },{passive:true});
+  list.forEach(function(el){ io.observe(el); });
+})();
+</script>
+<script>
+(function(){
+  var bar=document.getElementById('sticky'), link=bar.querySelector('a');
+  var seen=new Set(), heroPassed=false;
+  function update(){
+    var show=heroPassed && seen.size===0;
+    bar.classList.toggle('show',show);
+    bar.setAttribute('aria-hidden',show?'false':'true');
+    link.setAttribute('tabindex',show?'0':'-1');
+  }
+  if(!('IntersectionObserver' in window)) return;
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){ e.isIntersecting?seen.add(e.target):seen.delete(e.target); });
+    update();
+  },{threshold:.1});
+  document.querySelectorAll('.cta-watch').forEach(function(t){io.observe(t);});
+  new IntersectionObserver(function(es){ heroPassed=!es[0].isIntersecting; update(); })
+    .observe(document.querySelector('.hero'));
+})();
+</script>
+</body>
+</html>
